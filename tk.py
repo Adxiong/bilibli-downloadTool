@@ -60,7 +60,7 @@ def videoCompose():
         videopath = os.path.join(origin+"\\video", i)
         # print("视频路径："+videopath)
         # print(audiopath)
-        command = rf"ffmpeg -i {videopath} -i {audiopath} {origin}\{i[:-4]}.mp4"
+        command = rf"ffmpeg -i {videopath} -i {audiopath} {origin}\results\{i[:-4]}.mp4"
         os.system(command)
         os.remove(audiopath)
         os.remove(videopath)
@@ -106,6 +106,19 @@ if __name__ == '__main__':
                 # print(i["title"])
                 listbox.insert("end", i["bvid"]+": "+i["title"])
 
+
+    def thread_it(func, *args):
+        '''将函数打包进线程'''
+        # 创建
+        t = threading.Thread(target=func, args=args)
+        t.setName('tool')
+        # 守护 !!!
+        t.setDaemon(True)
+        # 启动
+        t.start()
+        # 阻塞--卡死界面！
+
+
     def download():
         if not os.path.exists(origin + r"\audio"):
             os.mkdir(origin + r"\audio")
@@ -135,8 +148,8 @@ if __name__ == '__main__':
             videoCompose()
             mb.showinfo("成功","转换完成")
 
-    btn_search = tk.Button(Frame1,text="搜索",command=search).pack(side="left")
-    btn_download = tk.Button(Frame1,text="下载",command=download).pack(side="right")
+    btn_search = tk.Button(Frame1,text="搜索",command=lambda: thread_it(search)).pack(side="left")
+    btn_download = tk.Button(Frame1,text="下载",command=lambda: thread_it(download)).pack(side="right")
     view_scroll = tk.Scrollbar(window)
     view_scroll.pack(side="right", fill="y")
     listbox = tk.Listbox(window, yscrollcommand=view_scroll.set , width=400 , height=500 , selectmode="single")
