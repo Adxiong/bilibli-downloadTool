@@ -124,6 +124,8 @@ if __name__ == '__main__':
             os.mkdir(origin + r"\audio")
         if not os.path.exists(origin + r"\video"):
             os.mkdir(origin + r"\video")
+        if not os.path.exists(origin + r"\results"):
+            os.mkdir(origin + r"\results")
         down_data = listbox.get("active")
         if not down_data:
             mb.showerror("错误","当前未选中数据")
